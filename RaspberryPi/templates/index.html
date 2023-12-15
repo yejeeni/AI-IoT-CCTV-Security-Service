@@ -1,0 +1,339 @@
+<html>
+
+<head>
+  <title>HF ICT Mentoring</title>
+  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript"
+    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=be853a5f8b50b01155e26a1fcbc329df&libraries=services"></script>
+  <style>
+    @font-face {
+      font-family: 'MICEGothic Bold';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-01@1.0/MICEGothic Bold.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    * {
+      padding: 0;
+      margin: 0.4rem;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 0.8rem;
+      font-family: 'MICEGothic Bold';
+      margin-right: 5rem;
+      margin-left: 5rem;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      background-color: #f1f3f5;
+    }
+
+    nav {
+    }
+
+    .nav-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-title {
+      font-size: 1.8rem;
+
+    }
+
+    .inner {
+      padding: 1rem;
+
+    }
+
+    div.left {
+      width: 60%;
+      height: 85%;
+      float: left;
+      box-sizing: border-box;
+      background: #8977ad;
+      padding : 1rem 1rem 1rem 1rem;
+      text-align: center;
+      background-color: white;
+    }
+
+    div.right {
+      width: 38%;
+      height: 65.8%;
+      float: left;
+      box-sizing: border-box;
+      background: #ece6cc;
+      padding : 1rem 1rem 1rem 1rem;
+      text-align: center;
+      background-color: white;
+    }
+
+    div.status {
+      width: 38%;
+      height: 18%;
+      float: left;
+      box-sizing: border-box;
+      background: #ece6cc;
+      font-size: 18px;
+      padding : 1rem 1rem 1rem 1rem;
+      text-align: center;
+      background-color: white;
+    }
+
+    .left-status {
+      width: 46%;
+      float: left;
+    }
+
+    .right-status {
+      width: 49%;
+      float: right;
+    }
+
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="inner">
+      <div class="nav-container">
+        <div class="nav-title">
+          <h1>인공지능 IoT 스마트 CCTV 자율주행 방범 서비스</h1>
+        </div>
+      </div>
+  </nav>
+  <p class="siren" id="siren_p" style="background-color: yellow; width:60%;height:3%;font-size: 20px;"></p>
+  <div class="left">
+    <h1>CCTV 모니터링</h1>
+    <img src="{{ url_for('video_feed') }}" style="width: 100%;height:96%;">
+  </div>
+
+  <div class="status" id="mainShideshow">
+    <h2>현재 수치</h2>
+    <div class="left-status">
+      <p class="temp"></p>
+    <p class="hum"></p>
+    <p class="gas"></p>
+    </div>
+    
+    <div class="right-status">
+      <p class="N"></p>
+      <p class="E"></p>
+    </div>
+
+  </div>
+  <div class="right">
+    <div class="map_wrap">
+      <div class="map_container">
+        <h1>현재 위치</h1>
+        <h2 span class="title">RC카 위치 행정동 주소:</span>
+          <span id="centerAddr"></span>
+          <div id="map"
+            style="width:95%;height:87%;position:relative;overflow:hidden;text-align: center; font-size: 15px;"></div>
+          <div class="hAddr">
+            
+          </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-database.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=be853a5f8b50b01155e26a1fcbc329df"></script>
+
+
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyBDqFT5UgZTzOHI2VpkY3sM49iI3KUqMNU",
+    authDomain: "cctv-project-609d3.firebaseapp.com",
+    databaseURL: "https://cctv-project-609d3-default-rtdb.firebaseio.com",
+    projectId: "cctv-project-609d3",
+    storageBucket: "cctv-project-609d3.appspot.com",
+    messagingSenderId: "1048686223789",
+    appId: "1:1048686223789:web:80728ec938dcab5dea0124",
+    measurementId: "G-6VSQV0GVYG"
+  };
+
+  // Initialize FirebaseS
+  firebase.initializeApp(firebaseConfig);
+
+  var database = firebase.database().ref('/sensor/temp/');
+  database.on('value', function (snapshot) {
+    var temp = snapshot.val();
+    $('.temp').html("온도: " + temp + "°C");
+  });
+
+  var humData = firebase.database().ref('/sensor/hum/');
+  humData.on('value', function (snapshot) {
+    var hum = snapshot.val();
+    $('.hum').html("습도: " + hum + "%");
+  });
+
+  var gasData = firebase.database().ref('/sensor/gas/');
+  humData.on('value', function (snapshot) {
+    var gas = snapshot.val();
+    $('.gas').html("가스: " + gas);
+  });
+
+  const date = new Date();
+  
+  var sirenData = firebase.database().ref('/capture/siren/');
+  sirenData.on('value', function (snapshot) {
+    var siren = snapshot.val();
+    if(siren === true) {
+      $('.siren').html(date.toLocaleString('ko-kr') + ". 긴급 상황이 발생했습니다");
+    } 
+  });
+
+  var N = 0;
+  var E = 0;
+
+  function setMap() {
+
+    /**
+     * 현재 위치의 좌표를 계산하고 지도에 표시합니다
+     */
+    var NData = firebase.database().ref('/sensor/N/');
+    NData.on('value', function (snapshot) {
+      N = snapshot.val();
+      $('.N').html("동경: " + N + "도");
+    });
+
+    var EData = firebase.database().ref('/sensor/E/');
+    EData.on('value', function (snapshot) {
+      E = snapshot.val();
+      $('.E').html("북위: " + E + "도");
+    });
+
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+      mapOption = {
+        center: new kakao.maps.LatLng(E, N), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+      };
+
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+
+    var markerPosition = new kakao.maps.LatLng(E, N);
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+      position: markerPosition
+    });
+
+    // 마커가 지도 위에 표시되도록 설정합니다
+    marker.setMap(map);
+    // 초기에도 인포윈도우를 열어둡니다
+    // var initialInfo = new kakao.maps.InfoWindow({
+    //     position: markerPosition,
+    //     content: '초기 마커 인포윈도우 용'S
+    // });
+
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    var coord = new kakao.maps.LatLng(E, N);
+    var callback = function (result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        console.log(result[0].address.address_name);
+        var iwContent =  '<div style="width: 250px; height: 100%; text-align: center;">' + result[0].address.address_name + '</div>',
+          inwPosition = markerPosition;
+        
+          var infowindow = new kakao.maps.InfoWindow({
+    position : markerPosition, 
+    content : iwContent 
+});
+infowindow.open(map, marker); 
+      }
+    };
+
+    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+
+    // 주소-좌표 변환 객체를 생성합니다
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    var click_marker = new kakao.maps.Marker(), // 클릭한 위치를 표시할 마커입니다
+      infowindow = new kakao.maps.InfoWindow({ zindex: 1 }); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+
+    // 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
+    searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+
+    // 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
+    kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+      searchDetailAddrFromCoords(markerPosition, function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
+          detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+
+          var content = '<div class="bAddr">' +
+            '<span class="title">법정동 주소정보</span>' +
+            detailAddr +
+            '</div>';
+
+          // 마커를 클릭한 위치에 표시합니다 
+          click_marker.setPosition(markerPosition);
+          click_marker.setMap(map);
+
+          // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+          infowindow.setContent(content);
+          infowindow.open(map, click_marker);
+        }
+      });
+    });
+
+    // 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
+    kakao.maps.event.addListener(map, 'idle', function () {
+      searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+    });
+
+    function searchAddrFromCoords(coords, callback) {
+      // 좌표로 행정동 주소 정보를 요청합니다
+      geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);
+    }
+
+    function searchDetailAddrFromCoords(coords, callback) {
+      // 좌표로 법정동 상세 주소 정보를 요청합니다
+      geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+    }
+
+    // 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+    function displayCenterInfo(result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        var infoDiv = document.getElementById('centerAddr');
+
+        for (var i = 0; i < result.length; i++) {
+          // 행정동의 region_type 값은 'H' 이므로
+          if (result[i].region_type === 'H') {
+            infoDiv.innerHTML = result[i].address_name;
+            break;
+          }
+        }
+      }
+    }
+
+    console.log("setMap is work / N, E: ", N, E);
+  }
+
+
+
+  setInterval(setMap, 3000);
+
+
+</script>
+
+</html>
