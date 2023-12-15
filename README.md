@@ -3,8 +3,7 @@
 
 ## 프로젝트 소개
 [![Video Label](http://img.youtube.com/vi/q88HHYJPSqw/0.jpg)](https://youtu.be/q88HHYJPSqw) <br> <br>
-CCTV + 자율주행 RC카를 이용하여 사각지대를 순찰하며 거리의 이상 현상 및 행인의 이상 행동을 감지하는 방범 서비스입니다. <br>
-수집한 정보는 실시간으로 웹사이트와 어플리케이션에 송출하고, 필요 시 스마트폰으로 자율주행 RC카를 원격 무선 조종합니다.
+CCTV + 자율주행 RC카를 이용하여 사각지대를 순찰하며 거리의 이상 현상 및 행인의 이상 행동을 감지하는 방범 서비스입니다. 수집한 정보는 실시간으로 웹사이트와 어플리케이션에 송출하고, 스마트폰으로 RC카를 원격 무선 조종할 수 있습니다.
 
 ## 개발 기간
 - 2023.04.17. ~ 2023.11.15.
@@ -17,7 +16,7 @@ CCTV + 자율주행 RC카를 이용하여 사각지대를 순찰하며 거리의
 - 팀원 정동규: RC카 자율주행, 하드웨어 개발, 애플리케이션 개발
 
 ### 개발환경
-![image](https://github.com/yejeeni/AI-IoT-CCTV-Security-Service/assets/110469361/14441387-9ec2-4ea7-a03a-778f76264152)
+![화면 캡처 2023-12-16 003936](https://github.com/yejeeni/AI-IoT-CCTV-Security-Service/assets/110469361/81853680-fa4b-420f-b7c7-92d36462341a)
 
 ## 주요 기술
  **가) S/W**<br>
