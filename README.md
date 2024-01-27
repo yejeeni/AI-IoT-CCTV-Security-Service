@@ -2,7 +2,8 @@
 올씨구나 - 인공지능 IoT 스마트 방범 서비스
 
 ## 프로젝트 소개
-[![Video Label](http://img.youtube.com/vi/q88HHYJPSqw/0.jpg)](https://youtu.be/q88HHYJPSqw) <br> <br>
+[![Video Label](http://img.youtube.com/vi/q88HHYJPSqw/0.jpg)](https://youtu.be/q88HHYJPSqw) <br> 클릭 시 유튜브로 이동합니다. <br>
+
 CCTV + 자율주행 RC카를 이용하여 사각지대를 순찰하며 거리의 이상 현상 및 행인의 이상 행동을 감지하는 방범 서비스입니다. 수집한 정보는 실시간으로 웹사이트와 어플리케이션에 송출하고, 스마트폰으로 RC카를 원격 무선 조종할 수 있습니다.
 
 ## 개발 기간
@@ -27,13 +28,13 @@ App과 Arduino의 무선연결을 Bluetooth를 이용한다. Bluetooth로 App과
  **2) Web Design**<br>
 ![화면 캡처 2023-12-16 000750](https://github.com/yejeeni/AI-IoT-CCTV-Security-Service/assets/110469361/f3bac4b4-46e8-4214-8f3f-283ca0354bd1)
 <br>
-HTML, CSS, JS 언어를 통해 개발하였다. RC카의 실시간 스트리밍, 센서 수치, 현위치를 확인할 수 있다.
+HTML, CSS, JS를 통해 제작하였다. RC카의 실시간 스트리밍 영상, 센서 수치, 현위치를 확인할 수 있다. 카카오지도 API를 사용하였다.
 
  **3) Web Framework**<br>
 Flask를 이용하였다. 또한 파이썬을 통해 Raspberry Pi의 gpio를 제어하며 웹과 연동하여 Raspberry Pi에서 웹서버를 구동할 수 있게 하였다. 온습도/가스/GPS 센서를 제어하고 값을 데이터베이스에 저장하거나 조회한다.
 
  **4) Database**<br>
-Google의 Firebas를 사용한다. 다양한 센서의 값을 실시간으로 저장하고 조회한다.
+Google의 Firebas를 사용한다. 다양한 센서의 값을 실시간으로 저장하고 조회하며, 위험을 감지하는 데에 사용된다.
 
  **5) 사람 동작 인식 (OpenPose)**<br>
  ![화면 캡처 2023-12-16 000347](https://github.com/yejeeni/AI-IoT-CCTV-Security-Service/assets/110469361/04150ef0-d9b9-4d33-8cfe-b79016e1331d)
@@ -50,6 +51,10 @@ YOLOv3를 통해 인식된 사람을 bounding box로 표시해 해당 boundary�
  <br>
  **1) 초음파 센서를 이용한 거리 인식**<br>
 RC카가 이동형 CCTV의 역할을 해낼 수 있도록 전방 장애물 거리 측정을 통해 장애물을 회피하며 자율주행하도록 했다.
+ **2) 온습도, 가스, GPS 센서를 이용한 위험 감지**<br>
+ 현장의 온습도와 가스 수치를 통해 화재나 가스 누출 등을 탐지하고 위험이 발생한 위치를 GPS로 확인 가능하다.
+  **3) 카메라를 이용한 CCTV 스트리밍**<br>
+  라즈베리파이 카메라를 통해 주행 중인 RC카가 촬영하는 영상을 송출하고, 송출 중인 영상에 접속할 수 있도록 하였다.
 
 ## 달성 성과
 -  **논문게재**: 방범 설비의 스마트화를 위한 인공지능 자율주행 CCTV 시스템, ACK 2023 학술발표대회 논문집 (30권 2호)
