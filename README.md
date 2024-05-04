@@ -34,7 +34,7 @@ HTML, CSS, JS를 통해 제작하였다. RC카의 실시간 스트리밍 영상,
 Flask를 이용하였다. 또한 파이썬을 통해 Raspberry Pi의 gpio를 제어하며 웹과 연동하여 Raspberry Pi에서 웹서버를 구동할 수 있게 하였다. 온습도/가스/GPS 센서를 제어하고 값을 데이터베이스에 저장하거나 조회한다.
 
  **4) Database**<br>
-Google의 Firebas를 사용한다. 다양한 센서의 값을 실시간으로 저장하고 조회하며, 위험을 감지하는 데에 사용된다.
+Google의 Firebase를 사용한다. 다양한 센서의 값을 실시간으로 저장하고 조회하며, 위험을 감지하는 데에 사용된다.
 
  **5) 사람 동작 인식 (OpenPose)**<br>
  ![화면 캡처 2023-12-16 000347](https://github.com/yejeeni/AI-IoT-CCTV-Security-Service/assets/110469361/04150ef0-d9b9-4d33-8cfe-b79016e1331d)
